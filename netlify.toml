@@ -1,95 +1,22 @@
 [build]
-  # Directorio de publicación (donde están los archivos del sitio)
   publish = "."
-
-  # Comando de construcción (no necesario para sitio estático)
-  command = "echo 'No build command needed for static site'"
-
-[build.environment]
-  # Variables de entorno para optimización
-  NODE_VERSION = "18"
-
-# Configuración de headers para optimización
-[[headers]]
-  for = "/*"
-  [headers.values]
-    # Seguridad
-    X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-
-    # Cache para recursos estáticos
-    Cache-Control = "public, max-age=31536000"
-
-# Headers específicos para HTML
-[[headers]]
-  for = "/*.html"
-  [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
-
-# Headers para CSS y JS
-[[headers]]
-  for = "/css/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-[[headers]]
-  for = "/js/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-# Redirecciones
-[[redirects]]
-  from = "/admin"
-  to = "/admin.html"
-  status = 200
-
-# Configuración para SPA (Single Page Application)
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  conditions = {Role = ["admin"]}
-
-# Configuración de formularios (para contacto futuro)
-[build.processing]
-  skip_processing = false
-
-[build.processing.css]
-  bundle = true
-  minify = true
-
-[build.processing.js]
-  bundle = false
-  minify = true
-
-[build.processing.html]
-  pretty_urls = true
+  command = "echo 'Static site - no build needed'"
 
 # Configuración de funciones serverless
 [functions]
   directory = "netlify/functions"
 
-# Variables de entorno para las funciones
-[build.environment]
-  # Estas se configuran en Netlify UI: Site settings > Environment variables
-  # GOOGLE_SHEET_ID = "tu_sheet_id_aqui"
-  # GOOGLE_API_KEY = "tu_api_key_aqui"
+# Headers de seguridad
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
 
-# Configuración de plugins
-[[plugins]]
-  package = "netlify-plugin-minify-html"
-
-  [plugins.inputs]
-    contexts = ["production"]
-
-# Variables de entorno para el sitio
-[context.production.environment]
-  ENVIRONMENT = "production"
-
-[context.deploy-preview.environment]
-  ENVIRONMENT = "preview"
-
-[context.branch-deploy.environment]
-  ENVIRONMENT = "development"
+# Redirección para admin
+[[redirects]]
+  from = "/admin"
+  to = "/admin.html"
+  status = 200
