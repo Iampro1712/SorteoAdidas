@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteo Adidas Premium - 99 Oportunidades de Ganar</title>
+    <meta name="description" content="Participa en nuestro sorteo de zapatos Adidas. 99 números disponibles a 70 córdobas cada uno.">
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="css/styles.css" as="style">
+    <link rel="preload" href="js/sorteo.js" as="script">
+
+    <!-- Optimized CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👟</text></svg>">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Sorteo Adidas Premium">
+    <meta property="og:description" content="¡Gana zapatos Adidas! 99 números a 70 córdobas cada uno.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tu-sitio.netlify.app">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="adidas-logo">
+                <div class="stripe"></div>
+                <div class="stripe"></div>
+                <div class="stripe"></div>
+            </div>
+            <p>Cargando sorteo...</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <h1>🏆 Sorteo Adidas</h1>
+            </div>
+            <div class="nav-links">
+                <a href="#como-participar" class="nav-link">¿Cómo participar?</a>
+                <a href="#premio" class="nav-link">Premio</a>
+                <a href="admin.html" class="nav-link admin-link">Admin</a>
+            </div>
+            <button class="nav-toggle" aria-label="Abrir menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h2 class="hero-title">
+                    <span class="highlight">Sorteo Adidas</span>
+                    <span class="subtitle">Premium Collection</span>
+                </h2>
+                <p class="hero-description">
+                    ¡Tu oportunidad de ganar zapatos Adidas originales!<br>
+                    <strong>99 números disponibles</strong> • <strong>70 córdobas c/u</strong>
+                </p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number" id="numeros-vendidos">0</span>
+                        <span class="stat-label">Vendidos</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="numeros-disponibles">99</span>
+                        <span class="stat-label">Disponibles</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">70</span>
+                        <span class="stat-label">Córdobas</span>
+                    </div>
+                </div>
+                <button class="cta-button" onclick="scrollToNumbers()">
+                    🎯 Elegir Números
+                </button>
+            </div>
+            <div class="hero-image">
+                <div class="shoe-container">
+                    <div class="shoe-placeholder">
+                        <div class="shoe-icon">👟</div>
+                        <p>Zapatos Adidas<br><strong>Originales</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <p class="progress-text">
+                <span id="progress-percentage">0%</span> completado
+            </p>
+        </div>
+    </section>
+
+    <!-- Prize Section -->
+    <section id="premio" class="prize-section">
+        <div class="container">
+            <h3 class="section-title">🏆 El Premio</h3>
+            <div class="prize-card">
+                <div class="prize-image">
+                    <div class="shoe-showcase">
+                        <div class="shoe-main">👟</div>
+                        <div class="shoe-details">
+                            <h4>Adidas Predator Club Socks</h4>
+                            <p>Talla: 40 (US 7)</p>
+                            <p>Color: Core Black</p>
+                            <p>Valor: $100 USD</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="prize-info">
+                    <h4>Características Premium</h4>
+                    <ul class="features-list">
+                        <li>✅ 100% Originales</li>
+                        <li>✅ Tecnología Boost</li>
+                        <li>✅ Garantía oficial</li>
+                        <li>✅ Caja original incluida</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Numbers Selection -->
+    <section id="numeros" class="numbers-section">
+        <div class="container">
+            <h3 class="section-title">🎯 Selecciona tus Números</h3>
+
+            <!-- Filters -->
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">Todos</button>
+                <button class="filter-btn" data-filter="available">Disponibles</button>
+                <button class="filter-btn" data-filter="sold">Vendidos</button>
+            </div>
+
+            <!-- Numbers Grid -->
+            <div class="numbers-grid" id="numbers-grid">
+                <!-- Numbers will be generated by JavaScript -->
+            </div>
+
+            <!-- Selected Numbers -->
+            <div class="selected-numbers" id="selected-numbers" style="display: none;">
+                <h4>Números Seleccionados:</h4>
+                <div class="selected-list" id="selected-list"></div>
+                <div class="total-price">
+                    Total: <span id="total-price">0</span> córdobas
+                </div>
+                <button class="buy-button" onclick="openPurchaseForm()">
+                    💳 Comprar Números
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Participate -->
+    <section id="como-participar" class="how-to-section">
+        <div class="container">
+            <h3 class="section-title">📋 ¿Cómo Participar?</h3>
+            <div class="steps-grid">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h4>Elige tus números</h4>
+                    <p>Selecciona uno o más números del 001 al 099</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h4>Completa tus datos</h4>
+                    <p>Llena el formulario con tu información</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h4>Realiza el pago</h4>
+                    <p>70 córdobas por número via transferencia</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h4>¡Espera el sorteo!</h4>
+                    <p>Fecha: [Por definir] - Transmisión en vivo</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Purchase Modal -->
+    <div id="purchase-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closePurchaseForm()">&times;</span>
+            <h3>💳 Completar Compra</h3>
+
+            <form id="purchase-form" class="purchase-form">
+                <div class="form-group">
+                    <label for="nombre">Nombre completo *</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefono">Teléfono *</label>
+                    <input type="tel" id="telefono" name="telefono" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email">
+                </div>
+
+                <div class="purchase-summary">
+                    <h4>Resumen de compra:</h4>
+                    <div id="summary-numbers"></div>
+                    <div class="summary-total">
+                        Total a pagar: <strong id="summary-total">0 córdobas</strong>
+                    </div>
+                </div>
+
+                <div class="payment-info">
+                    <h4>💰 Información de Pago</h4>
+                    <p><strong>Transferencia Bancaria:</strong></p>
+                    <p>Banco: BAC</p>
+                    <p>Cuenta: 123456789</p>
+                    <p>A nombre de: [Tu Nombre]</p>
+                </div>
+
+                <button type="submit" class="submit-button">
+                    📱 Enviar por WhatsApp
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <p>📱 WhatsApp: +505 8888-8888</p>
+                    <p>📧 Email: sorteo@adidas.com</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Términos</h4>
+                    <p>• Sorteo válido hasta agotar números</p>
+                    <p>• Ganador se elige por lotería nacional</p>
+                    <p>• Premio no reembolsable</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Síguenos</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-link">📘 Facebook</a>
+                        <a href="#" class="social-link">📷 Instagram</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Sorteo Adidas. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/sheets-api.js"></script>
+    <script src="js/sorteo.js"></script>
+</body>
+</html>

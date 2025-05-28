@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Sorteo Adidas</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: var(--gray-light);
+            min-height: 100vh;
+        }
+
+        .admin-header {
+            background: var(--gradient-primary);
+            color: var(--primary-white);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--primary-white);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: var(--shadow-light);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: var(--font-weight-black);
+            color: var(--accent-red);
+        }
+
+        .stat-label {
+            color: var(--gray-dark);
+            margin-top: 0.5rem;
+        }
+
+        .admin-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .admin-section {
+            background: var(--primary-white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-black);
+            border-bottom: 2px solid var(--accent-red);
+            padding-bottom: 0.5rem;
+        }
+
+        .sold-numbers {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .sold-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-medium);
+            transition: background var(--transition-fast);
+        }
+
+        .sold-item:hover {
+            background: var(--gray-light);
+        }
+
+        .sold-number {
+            font-weight: var(--font-weight-bold);
+            color: var(--accent-red);
+            font-size: 1.2rem;
+        }
+
+        .sold-buyer {
+            flex-grow: 1;
+            margin-left: 1rem;
+        }
+
+        .sold-buyer strong {
+            display: block;
+            color: var(--primary-black);
+        }
+
+        .sold-buyer small {
+            color: var(--gray-dark);
+        }
+
+        .manual-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .admin-input {
+            padding: 0.75rem;
+            border: 2px solid var(--gray-medium);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .admin-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        .admin-button {
+            background: var(--gradient-accent);
+            color: var(--primary-white);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: var(--font-weight-bold);
+            transition: all var(--transition-medium);
+        }
+
+        .admin-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .admin-button.secondary {
+            background: var(--gray-medium);
+            color: var(--gray-dark);
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Login Screen Styles */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .login-container {
+            background: var(--primary-white);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-heavy);
+            width: 100%;
+            max-width: 400px;
+            margin: 2rem;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h1 {
+            color: var(--primary-black);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: var(--gray-dark);
+            opacity: 0.8;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .login-button {
+            background: var(--gradient-accent);
+            color: var(--primary-white);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: var(--font-weight-bold);
+            cursor: pointer;
+            transition: all var(--transition-medium);
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .login-error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #ffcdd2;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .login-footer a {
+            color: var(--gray-dark);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        .login-footer a:hover {
+            color: var(--accent-red);
+        }
+
+        @media (max-width: 768px) {
+            .admin-sections {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .login-container {
+                padding: 2rem;
+                margin: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>🔐 Acceso Administrativo</h1>
+                <p>Sorteo Adidas - Panel de Control</p>
+            </div>
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="admin-password">Contraseña de Administrador:</label>
+                    <input type="password" id="admin-password" name="password" required
+                           placeholder="Ingresa la contraseña" autocomplete="current-password">
+                </div>
+                <button type="submit" class="login-button">
+                    🚀 Acceder al Panel
+                </button>
+                <div class="login-error" id="login-error" style="display: none;">
+                    ❌ Contraseña incorrecta
+                </div>
+            </form>
+            <div class="login-footer">
+                <a href="index.html">← Volver al Sorteo</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-container" id="admin-container" style="display: none;">
+        <!-- Header -->
+        <div class="admin-header">
+            <h1>🛠️ Panel de Administración</h1>
+            <p>Gestión del Sorteo Adidas</p>
+            <div style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="index.html" class="admin-button secondary" style="display: inline-block; text-decoration: none;">
+                    ← Volver al Sorteo
+                </a>
+                <button class="admin-button" style="background: var(--accent-red);" onclick="logout()">
+                    🚪 Cerrar Sesión
+                </button>
+            </div>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="admin-stats">
+            <div class="stat-card">
+                <div class="stat-value" id="total-vendidos">0</div>
+                <div class="stat-label">Números Vendidos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="total-disponibles">99</div>
+                <div class="stat-label">Disponibles</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="total-recaudado">0</div>
+                <div class="stat-label">Córdobas Recaudados</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="porcentaje-vendido">0%</div>
+                <div class="stat-label">Progreso</div>
+            </div>
+        </div>
+
+        <!-- Secciones principales -->
+        <div class="admin-sections">
+            <!-- Lista de números vendidos -->
+            <div class="admin-section">
+                <h3 class="section-title">📋 Números Vendidos</h3>
+                <div class="sold-numbers" id="sold-numbers-list">
+                    <!-- Se llena dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Venta manual -->
+            <div class="admin-section">
+                <h3 class="section-title">➕ Venta Manual</h3>
+                <form class="manual-form" id="manual-sale-form">
+                    <div class="form-row">
+                        <label>Número:</label>
+                        <input type="text" class="admin-input" id="manual-number" placeholder="001-099" maxlength="3" required>
+                    </div>
+                    <div class="form-row">
+                        <label>Nombre:</label>
+                        <input type="text" class="admin-input" id="manual-nombre" placeholder="Nombre completo" required>
+                    </div>
+                    <div class="form-row">
+                        <label>Teléfono:</label>
+                        <input type="tel" class="admin-input" id="manual-telefono" placeholder="+505 8888-8888" required>
+                    </div>
+                    <div class="form-row">
+                        <label>Email:</label>
+                        <input type="email" class="admin-input" id="manual-email" placeholder="email@ejemplo.com">
+                    </div>
+                    <button type="submit" class="admin-button">💰 Registrar Venta</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Acciones adicionales -->
+        <div class="admin-section" style="margin-top: 2rem;">
+            <h3 class="section-title">⚙️ Acciones</h3>
+            <div class="actions-grid">
+                <button class="admin-button" onclick="refreshData()">🔄 Actualizar Datos</button>
+                <button class="admin-button" onclick="exportData()">📊 Exportar Datos</button>
+                <button class="admin-button secondary" onclick="clearReservations()">🧹 Limpiar Reservas</button>
+                <button class="admin-button secondary" onclick="resetSorteo()" style="background: var(--accent-red);">⚠️ Reiniciar Sorteo</button>
+            </div>
+        </div>
+
+        <!-- Configuración de Google Sheets -->
+        <div class="admin-section" style="margin-top: 2rem;">
+            <h3 class="section-title">🔗 Configuración Google Sheets</h3>
+            <div class="form-row">
+                <label>Sheet ID:</label>
+                <input type="text" class="admin-input" id="sheet-id" placeholder="ID de tu Google Sheet">
+            </div>
+            <div class="form-row">
+                <label>API Key:</label>
+                <input type="text" class="admin-input" id="api-key" placeholder="Tu API Key de Google">
+            </div>
+            <button class="admin-button" onclick="saveConfig()">💾 Guardar Configuración</button>
+            <button class="admin-button secondary" onclick="testConnection()">🔍 Probar Conexión</button>
+        </div>
+
+        <!-- Instrucciones -->
+        <div class="admin-section" style="margin-top: 2rem;">
+            <h3 class="section-title">📖 Instrucciones</h3>
+            <div style="line-height: 1.8;">
+                <h4>Configuración inicial:</h4>
+                <ol>
+                    <li>Crea una Google Sheet con columnas: Número, Estado, Comprador, Teléfono, Email, Fecha</li>
+                    <li>Obtén tu API Key de Google Cloud Console</li>
+                    <li>Copia el ID de tu Sheet (está en la URL)</li>
+                    <li>Configura los datos arriba y prueba la conexión</li>
+                </ol>
+
+                <h4>Uso diario:</h4>
+                <ul>
+                    <li>Los números se actualizan automáticamente cada 30 segundos</li>
+                    <li>Puedes registrar ventas manuales desde este panel</li>
+                    <li>Exporta los datos regularmente como respaldo</li>
+                    <li>Limpia las reservas si hay números "colgados"</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/sheets-api.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
