@@ -999,3 +999,159 @@ body {
         animation: none;
     }
 }
+
+/* PayPal Integration Styles */
+.paypal-section {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    border: 2px solid #0070ba;
+}
+
+.paypal-section h4 {
+    color: #0070ba;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.paypal-benefits {
+    margin: 1rem 0;
+}
+
+.paypal-benefits p {
+    margin: 0.5rem 0;
+    color: #28a745;
+    font-weight: 500;
+}
+
+.pricing-breakdown {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    margin: 1rem 0;
+}
+
+.price-line {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem 0;
+    padding: 0.25rem 0;
+}
+
+.total-line {
+    border-top: 2px solid #0070ba;
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.payment-note {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 6px;
+    color: #856404;
+}
+
+#paypal-button-container {
+    margin: 1.5rem 0;
+    min-height: 50px;
+}
+
+/* PayPal Message Styles */
+.paypal-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 10001;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+}
+
+.paypal-message.success {
+    border: 3px solid #28a745;
+}
+
+.paypal-message.error {
+    border: 3px solid #dc3545;
+}
+
+.success-payment h3 {
+    color: #28a745;
+    margin-bottom: 1rem;
+}
+
+.success-payment p {
+    margin: 0.5rem 0;
+    line-height: 1.6;
+}
+
+.success-note {
+    background: #d4edda;
+    padding: 1rem;
+    border-radius: 6px;
+    color: #155724;
+    margin-top: 1rem;
+    font-style: italic;
+}
+
+/* Form Actions Update */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+/* Responsive PayPal Styles */
+@media (max-width: 768px) {
+    .paypal-section {
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+
+    .pricing-breakdown {
+        padding: 0.75rem;
+    }
+
+    .price-line {
+        font-size: 0.9rem;
+    }
+
+    .paypal-message {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
