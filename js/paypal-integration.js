@@ -245,7 +245,7 @@ class PayPalIntegration {
             <div class="success-payment">
                 <h3>🎉 ¡Pago Exitoso!</h3>
                 <p><strong>Números comprados:</strong> ${selectedNumbers.join(', ')}</p>
-                <p><strong>Monto pagado:</strong> $${pricing.totalUSD} USD (₡${pricing.totalCordobas})</p>
+                <p><strong>Monto pagado:</strong> $${pricing.totalUSD} USD (C$${pricing.totalCordobas})</p>
                 <p><strong>ID de transacción:</strong> ${order.id}</p>
                 <p><strong>Email:</strong> ${order.payer.email_address}</p>
                 <p class="success-note">¡Gracias por participar en el sorteo! Te contactaremos pronto.</p>

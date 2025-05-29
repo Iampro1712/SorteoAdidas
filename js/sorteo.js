@@ -320,7 +320,7 @@ class SorteoApp {
             <div class="pricing-breakdown">
                 <div class="price-line">
                     <span>Precio base:</span>
-                    <span>₡${pricing.basePrice}</span>
+                    <span>C$${pricing.basePrice}</span>
                 </div>
                 <div class="price-line">
                     <span>Comisión PayPal:</span>
@@ -328,7 +328,7 @@ class SorteoApp {
                 </div>
                 <div class="price-line total-line">
                     <span><strong>Total a pagar:</strong></span>
-                    <span><strong>₡${pricing.totalCordobas} ($${pricing.totalUSD} USD)</strong></span>
+                    <span><strong>C$${pricing.totalCordobas} ($${pricing.totalUSD} USD)</strong></span>
                 </div>
             </div>
         `;
@@ -454,7 +454,7 @@ class SorteoApp {
                        `📱 *Teléfono:* ${buyerInfo.telefono}\n` +
                        `📧 *Email:* ${buyerInfo.email}\n\n` +
                        `🎯 *Números:* ${numbersText}\n` +
-                       `💰 *Total:* ${total} córdobas\n\n` +
+                       `💰 *Total:* C$${total}\n\n` +
                        `*Información de pago:*\n` +
                        `Banco: BAC\n` +
                        `Cuenta: 123456789\n\n` +
@@ -472,7 +472,7 @@ class SorteoApp {
                        `📱 *Teléfono:* ${buyerInfo.telefono}\n` +
                        `📧 *Email:* ${buyerInfo.email}\n\n` +
                        `🎯 *Números comprados:* ${numbersText}\n` +
-                       `💰 *Total pagado:* ₡${pricing.totalCordobas} ($${pricing.totalUSD} USD)\n` +
+                       `💰 *Total pagado:* C$${pricing.totalCordobas} ($${pricing.totalUSD} USD)\n` +
                        `💳 *Comisión PayPal:* $${pricing.paypalFees} USD\n\n` +
                        `*Detalles de PayPal:*\n` +
                        `🆔 *Order ID:* ${buyerInfo.paypalOrderId}\n` +

@@ -4,7 +4,7 @@ Sistema web completo para sorteos de productos con integración a Google Sheets 
 
 ## ✨ Características
 
-- **🎯 99 números disponibles** a 70 córdobas cada uno
+- **🎯 99 números disponibles** a C$70 cada uno
 - **📱 Diseño responsive** optimizado para móviles
 - **⚡ Carga ultra-rápida** con optimizaciones de rendimiento
 - **🔄 Sincronización en tiempo real** con Google Sheets
