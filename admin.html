@@ -12,6 +12,7 @@
             padding: 2rem;
             background: var(--gray-light);
             min-height: 100vh;
+            transition: opacity var(--transition-medium);
         }
 
         .admin-header {
@@ -173,6 +174,7 @@
             align-items: center;
             justify-content: center;
             z-index: 9999;
+            transition: opacity var(--transition-medium);
         }
 
         .login-container {
@@ -203,33 +205,236 @@
         .login-form {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 2rem;
         }
 
+        /* Password Container Styles */
+        .password-container {
+            position: relative;
+            transition: transform var(--transition-medium);
+        }
+
+        .password-label {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: var(--font-weight-bold);
+            color: var(--primary-black);
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+
+        .password-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 1.25rem 3.5rem 1.25rem 1.25rem;
+            border: 3px solid var(--gray-medium);
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+            background: var(--primary-white);
+            transition: all var(--transition-medium);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.1), inset 0 2px 4px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .password-input::placeholder {
+            font-family: var(--font-primary);
+            letter-spacing: normal;
+            color: var(--gray-medium);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all var(--transition-fast);
+            z-index: 1;
+        }
+
+        .password-toggle:hover {
+            background: rgba(0,0,0,0.1);
+            transform: scale(1.1);
+        }
+
+        .eye-icon {
+            font-size: 1.5rem;
+            transition: all var(--transition-fast);
+        }
+
+        .password-toggle.hidden .eye-icon {
+            opacity: 0.5;
+            transform: scale(0.9);
+        }
+
+        /* Password Strength Indicator */
+        .password-strength {
+            margin-top: 0.75rem;
+            transition: all var(--transition-medium);
+            opacity: 0.7;
+            transform: translateY(-5px);
+        }
+
+        .strength-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--gray-light);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--gradient-accent);
+            border-radius: 3px;
+            transition: all var(--transition-medium);
+            position: relative;
+        }
+
+        .strength-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .strength-text {
+            font-size: 0.9rem;
+            color: var(--gray-dark);
+            text-align: center;
+            display: block;
+            transition: color var(--transition-fast);
+        }
+
+        .strength-text.weak { color: #ff5722; }
+        .strength-text.medium { color: #ff9800; }
+        .strength-text.strong { color: #4caf50; }
+
+        /* Login Button Styles */
         .login-button {
             background: var(--gradient-accent);
             color: var(--primary-white);
             border: none;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            font-size: 1.1rem;
+            padding: 1.25rem 2rem;
+            border-radius: 15px;
+            font-size: 1.2rem;
             font-weight: var(--font-weight-bold);
             cursor: pointer;
             transition: all var(--transition-medium);
-        }
-
-        .login-button:hover {
-            transform: translateY(-2px);
+            position: relative;
+            overflow: hidden;
             box-shadow: var(--shadow-medium);
         }
 
+        .login-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left var(--transition-medium);
+        }
+
+        .login-button:hover::before {
+            left: 100%;
+        }
+
+        .login-button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .login-button:active {
+            transform: translateY(-1px);
+        }
+
+        .button-text {
+            transition: opacity var(--transition-fast);
+        }
+
+        .button-loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid var(--primary-white);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Error Styles */
         .login-error {
-            background: #ffebee;
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
             color: #c62828;
-            padding: 1rem;
-            border-radius: 8px;
+            padding: 1.25rem;
+            border-radius: 15px;
             text-align: center;
-            border: 1px solid #ffcdd2;
+            border: 2px solid #ffcdd2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            animation: shake 0.5s ease-in-out;
+            box-shadow: var(--shadow-light);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .error-icon {
+            font-size: 1.5rem;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .error-text {
+            font-weight: var(--font-weight-bold);
         }
 
         .login-footer {
@@ -276,16 +481,36 @@
                 <p>Sorteo Adidas - Panel de Control</p>
             </div>
             <form id="login-form" class="login-form">
-                <div class="form-group">
-                    <label for="admin-password">Contraseña de Administrador:</label>
-                    <input type="password" id="admin-password" name="password" required
-                           placeholder="Ingresa la contraseña" autocomplete="current-password">
+                <div class="password-container">
+                    <label for="admin-password" class="password-label">
+                        🔐 Contraseña de Administrador
+                    </label>
+                    <div class="password-input-wrapper">
+                        <input type="password" id="admin-password" name="password" required
+                               placeholder="Ingresa tu contraseña secreta"
+                               autocomplete="current-password"
+                               class="password-input">
+                        <button type="button" class="password-toggle" id="password-toggle"
+                                aria-label="Mostrar/Ocultar contraseña">
+                            <span class="eye-icon" id="eye-icon">👁️</span>
+                        </button>
+                    </div>
+                    <div class="password-strength" id="password-strength">
+                        <div class="strength-bar">
+                            <div class="strength-fill" id="strength-fill"></div>
+                        </div>
+                        <span class="strength-text" id="strength-text">Ingresa tu contraseña</span>
+                    </div>
                 </div>
                 <button type="submit" class="login-button">
-                    🚀 Acceder al Panel
+                    <span class="button-text">🚀 Acceder al Panel</span>
+                    <div class="button-loader" id="button-loader" style="display: none;">
+                        <div class="spinner"></div>
+                    </div>
                 </button>
                 <div class="login-error" id="login-error" style="display: none;">
-                    ❌ Contraseña incorrecta
+                    <div class="error-icon">⚠️</div>
+                    <div class="error-text">Contraseña incorrecta</div>
                 </div>
             </form>
             <div class="login-footer">

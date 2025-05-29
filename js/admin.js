@@ -79,10 +79,119 @@ class AdminPanel {
         document.getElementById('login-screen').style.display = 'flex';
         document.getElementById('admin-container').style.display = 'none';
 
-        // Configurar event listener para el login
+        // Configurar event listeners para el login
+        this.setupLoginEventListeners();
+    }
+
+    setupLoginEventListeners() {
         const loginForm = document.getElementById('login-form');
+        const passwordToggle = document.getElementById('password-toggle');
+        const passwordInput = document.getElementById('admin-password');
+
+        // Event listener para el formulario
         if (loginForm) {
             loginForm.addEventListener('submit', (e) => this.handleLogin(e));
+        }
+
+        // Event listener para mostrar/ocultar contraseña
+        if (passwordToggle) {
+            passwordToggle.addEventListener('click', () => this.togglePasswordVisibility());
+        }
+
+        // Event listener para indicador de fuerza de contraseña
+        if (passwordInput) {
+            passwordInput.addEventListener('input', (e) => this.updatePasswordStrength(e.target.value));
+            passwordInput.addEventListener('focus', () => this.animatePasswordFocus(true));
+            passwordInput.addEventListener('blur', () => this.animatePasswordFocus(false));
+        }
+    }
+
+    togglePasswordVisibility() {
+        const passwordInput = document.getElementById('admin-password');
+        const passwordToggle = document.getElementById('password-toggle');
+        const eyeIcon = document.getElementById('eye-icon');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.textContent = '🙈';
+            passwordToggle.classList.add('hidden');
+            passwordInput.style.fontFamily = 'var(--font-primary)';
+            passwordInput.style.letterSpacing = 'normal';
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.textContent = '👁️';
+            passwordToggle.classList.remove('hidden');
+            passwordInput.style.fontFamily = "'Courier New', monospace";
+            passwordInput.style.letterSpacing = '2px';
+        }
+
+        // Animación del botón
+        passwordToggle.style.transform = 'scale(0.8)';
+        setTimeout(() => {
+            passwordToggle.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                passwordToggle.style.transform = 'scale(1)';
+            }, 150);
+        }, 150);
+    }
+
+    updatePasswordStrength(password) {
+        const strengthFill = document.getElementById('strength-fill');
+        const strengthText = document.getElementById('strength-text');
+
+        if (!password) {
+            strengthFill.style.width = '0%';
+            strengthText.textContent = 'Ingresa tu contraseña';
+            strengthText.className = 'strength-text';
+            return;
+        }
+
+        // Calcular fuerza de la contraseña
+        let strength = 0;
+        let feedback = '';
+
+        if (password.length >= 8) strength += 25;
+        if (password.length >= 12) strength += 25;
+        if (/[A-Z]/.test(password)) strength += 15;
+        if (/[a-z]/.test(password)) strength += 15;
+        if (/[0-9]/.test(password)) strength += 10;
+        if (/[^A-Za-z0-9]/.test(password)) strength += 10;
+
+        // Determinar nivel y mensaje
+        if (strength < 30) {
+            feedback = 'Contraseña débil';
+            strengthText.className = 'strength-text weak';
+            strengthFill.style.background = 'linear-gradient(90deg, #ff5722, #ff7043)';
+        } else if (strength < 70) {
+            feedback = 'Contraseña media';
+            strengthText.className = 'strength-text medium';
+            strengthFill.style.background = 'linear-gradient(90deg, #ff9800, #ffb74d)';
+        } else {
+            feedback = 'Contraseña fuerte';
+            strengthText.className = 'strength-text strong';
+            strengthFill.style.background = 'linear-gradient(90deg, #4caf50, #66bb6a)';
+        }
+
+        strengthFill.style.width = `${Math.min(strength, 100)}%`;
+        strengthText.textContent = feedback;
+    }
+
+    animatePasswordFocus(focused) {
+        const passwordContainer = document.querySelector('.password-container');
+        const strengthBar = document.querySelector('.password-strength');
+
+        if (focused) {
+            passwordContainer.style.transform = 'scale(1.02)';
+            strengthBar.style.opacity = '1';
+            strengthBar.style.transform = 'translateY(0)';
+        } else {
+            passwordContainer.style.transform = 'scale(1)';
+            // Mantener visible si hay texto
+            const passwordInput = document.getElementById('admin-password');
+            if (!passwordInput.value) {
+                strengthBar.style.opacity = '0.7';
+                strengthBar.style.transform = 'translateY(-5px)';
+            }
         }
     }
 
@@ -91,6 +200,15 @@ class AdminPanel {
 
         const password = document.getElementById('admin-password').value;
         const errorDiv = document.getElementById('login-error');
+        const buttonText = document.querySelector('.button-text');
+        const buttonLoader = document.getElementById('button-loader');
+        const loginButton = document.querySelector('.login-button');
+
+        // Mostrar animación de carga
+        this.showLoginLoader(true);
+
+        // Simular tiempo de verificación para mejor UX
+        await new Promise(resolve => setTimeout(resolve, 1500));
 
         if (password === this.adminPassword) {
             // Autenticación exitosa
@@ -98,22 +216,77 @@ class AdminPanel {
             sessionStorage.setItem('admin-auth', 'authenticated');
             sessionStorage.setItem('admin-auth-time', Date.now().toString());
 
-            // Ocultar login y mostrar panel
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('admin-container').style.display = 'block';
+            // Animación de éxito
+            loginButton.style.background = 'linear-gradient(135deg, #4caf50, #66bb6a)';
+            buttonText.textContent = '✅ Acceso Concedido';
+
+            // Esperar un momento antes de cambiar de pantalla
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // Ocultar login y mostrar panel con animación
+            document.getElementById('login-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('admin-container').style.display = 'block';
+                document.getElementById('admin-container').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('admin-container').style.opacity = '1';
+                }, 100);
+            }, 500);
 
             // Inicializar panel
             await this.initializeAdminPanel();
 
         } else {
-            // Mostrar error
-            errorDiv.style.display = 'block';
-            document.getElementById('admin-password').value = '';
+            // Ocultar loader
+            this.showLoginLoader(false);
 
-            // Ocultar error después de 3 segundos
+            // Animación de error
+            loginButton.style.background = 'linear-gradient(135deg, #f44336, #e57373)';
+            buttonText.textContent = '❌ Acceso Denegado';
+
+            // Mostrar error con animación
+            errorDiv.style.display = 'flex';
+            errorDiv.style.opacity = '0';
             setTimeout(() => {
-                errorDiv.style.display = 'none';
-            }, 3000);
+                errorDiv.style.opacity = '1';
+            }, 100);
+
+            // Limpiar campo de contraseña
+            document.getElementById('admin-password').value = '';
+            this.updatePasswordStrength('');
+
+            // Restaurar botón después de 2 segundos
+            setTimeout(() => {
+                loginButton.style.background = 'var(--gradient-accent)';
+                buttonText.textContent = '🚀 Acceder al Panel';
+
+                // Ocultar error después de 3 segundos más
+                setTimeout(() => {
+                    errorDiv.style.opacity = '0';
+                    setTimeout(() => {
+                        errorDiv.style.display = 'none';
+                    }, 300);
+                }, 3000);
+            }, 2000);
+        }
+    }
+
+    showLoginLoader(show) {
+        const buttonText = document.querySelector('.button-text');
+        const buttonLoader = document.getElementById('button-loader');
+        const loginButton = document.querySelector('.login-button');
+
+        if (show) {
+            buttonText.style.opacity = '0';
+            buttonLoader.style.display = 'block';
+            loginButton.disabled = true;
+            loginButton.style.cursor = 'not-allowed';
+        } else {
+            buttonText.style.opacity = '1';
+            buttonLoader.style.display = 'none';
+            loginButton.disabled = false;
+            loginButton.style.cursor = 'pointer';
         }
     }
 

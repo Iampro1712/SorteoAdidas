@@ -8,7 +8,7 @@ class SheetsAPI {
         // Configuración de Google Sheets API desde variables de entorno
         this.SHEET_ID = null;
         this.API_KEY = null;
-        this.RANGE = 'Sorteo!A:F'; // Rango de datos en la hoja
+        this.RANGE = 'A:F'; // Rango de datos en la primera hoja
 
         // URLs de la API (se configuran después de cargar las variables)
         this.READ_URL = null;
@@ -125,13 +125,17 @@ class SheetsAPI {
         }
 
         try {
+            console.log('🔗 Intentando conectar con:', this.READ_URL);
             const response = await fetch(this.READ_URL);
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorText = await response.text();
+                console.error('❌ Error response:', errorText);
+                throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
             }
 
             const data = await response.json();
+            console.log('✅ Datos recibidos de Sheets:', data);
 
             // Procesar datos de la hoja
             this.processSheetData(data.values || []);
